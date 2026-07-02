@@ -6,6 +6,78 @@ const Pedido = require("../models/Pedido");
 const router = express.Router();
 
 /*
+  GET /api/pedidos
+  Obtener todos los pedidos
+*/
+router.get("/", async (req, res) => {
+  try {
+    const pedidos = await Pedido.find().sort({ fecha_pedido: -1 });
+
+    res.json({
+      mensaje: "Pedidos obtenidos correctamente",
+      cantidad: pedidos.length,
+      pedidos,
+    });
+  } catch (error) {
+    res.status(500).json({
+      mensaje: "Error al obtener pedidos",
+      error: error.message,
+    });
+  }
+});
+
+/*
+  GET /api/pedidos/cliente/:clienteId
+  Obtener pedidos de un cliente específico
+*/
+router.get("/cliente/:clienteId", async (req, res) => {
+  try {
+    const { clienteId } = req.params;
+
+    const pedidos = await Pedido.find({
+      "cliente.id_cliente": clienteId,
+    }).sort({ fecha_pedido: -1 });
+
+    res.json({
+      mensaje: "Pedidos del cliente obtenidos correctamente",
+      cantidad: pedidos.length,
+      pedidos,
+    });
+  } catch (error) {
+    res.status(500).json({
+      mensaje: "Error al obtener los pedidos del cliente",
+      error: error.message,
+    });
+  }
+});
+
+/*
+  GET /api/pedidos/:id
+  Obtener un pedido por ID
+*/
+router.get("/:id", async (req, res) => {
+  try {
+    const pedido = await Pedido.findById(req.params.id);
+
+    if (!pedido) {
+      return res.status(404).json({
+        mensaje: "Pedido no encontrado",
+      });
+    }
+
+    res.json({
+      mensaje: "Pedido obtenido correctamente",
+      pedido,
+    });
+  } catch (error) {
+    res.status(500).json({
+      mensaje: "Error al obtener el pedido",
+      error: error.message,
+    });
+  }
+});
+
+/*
   POST /api/pedidos
   Crear un pedido y descontar stock automáticamente
 */
@@ -109,6 +181,61 @@ router.post("/", async (req, res) => {
   } catch (error) {
     res.status(500).json({
       mensaje: "Error al crear el pedido",
+      error: error.message,
+    });
+  }
+});
+
+/*
+  PUT /api/pedidos/:id/estado
+  Actualizar el estado de un pedido
+*/
+router.put("/:id/estado", async (req, res) => {
+  try {
+    const { estado } = req.body;
+
+    const estadosPermitidos = [
+      "pendiente",
+      "enviado",
+      "entregado",
+      "cancelado",
+    ];
+
+    if (!estado) {
+      return res.status(400).json({
+        mensaje: "El estado es obligatorio",
+      });
+    }
+
+    if (!estadosPermitidos.includes(estado)) {
+      return res.status(400).json({
+        mensaje: "Estado no válido",
+        estadosPermitidos,
+      });
+    }
+
+    const pedidoActualizado = await Pedido.findByIdAndUpdate(
+      req.params.id,
+      { estado },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+
+    if (!pedidoActualizado) {
+      return res.status(404).json({
+        mensaje: "Pedido no encontrado",
+      });
+    }
+
+    res.json({
+      mensaje: "Estado del pedido actualizado correctamente",
+      pedido: pedidoActualizado,
+    });
+  } catch (error) {
+    res.status(500).json({
+      mensaje: "Error al actualizar el estado del pedido",
       error: error.message,
     });
   }
