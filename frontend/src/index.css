@@ -269,3 +269,108 @@ th {
   font-size: 24px;
   color: #111827;
 }
+
+.orders-list {
+  display: grid;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.order-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.order-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.order-card__header h3 {
+  margin: 0;
+}
+
+.order-card__header p {
+  margin: 8px 0 0;
+}
+
+.order-card__content {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.order-section {
+  padding: 16px;
+  border-radius: 10px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+.order-section h4 {
+  margin-top: 0;
+}
+
+.order-section p {
+  margin: 6px 0;
+}
+
+.status-badge {
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status-pendiente {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-enviado {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.status-entregado {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-cancelado {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.order-total {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+  font-size: 18px;
+}
+
+.order-total strong {
+  font-size: 24px;
+}
+
+@media (max-width: 800px) {
+  .order-card__header {
+    flex-direction: column;
+  }
+
+  .order-card__content {
+    grid-template-columns: 1fr;
+  }
+}
