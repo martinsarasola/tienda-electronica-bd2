@@ -628,9 +628,9 @@ Funcionalidades terminadas:
 
 ## Integrantes
 
-José Martín Sarasola
-Maximiliano Exequiel Lorenzi
-Juan Giribaldi
+ - José Martín Sarasola
+ - Maximiliano Exequiel Lorenzi
+ - Juan Giribaldi
 
 ## Materia
 
